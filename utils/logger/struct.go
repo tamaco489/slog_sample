@@ -12,6 +12,13 @@ type AppLogger struct {
 	*slog.Logger
 }
 
+// NewAppLogger: Create new AppLogger instance
+func NewAppLogger(logger *slog.Logger) Logger {
+	return &AppLogger{
+		Logger: logger,
+	}
+}
+
 // SystemInfo: System information
 type SystemInfo struct {
 	Environment string `json:"environment"`

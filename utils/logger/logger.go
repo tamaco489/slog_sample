@@ -9,12 +9,12 @@ import (
 )
 
 var (
-	globalLogger *AppLogger
+	globalLogger Logger
 	once         sync.Once
 )
 
 // New: create new logger instance
-func New() *AppLogger {
+func New() Logger {
 	once.Do(func() {
 		handler := slog.NewJSONHandler(
 			os.Stdout, &slog.HandlerOptions{
@@ -22,15 +22,13 @@ func New() *AppLogger {
 			},
 		)
 
-		globalLogger = &AppLogger{
-			Logger: slog.New(handler),
-		}
+		globalLogger = NewAppLogger(slog.New(handler))
 	})
 	return globalLogger
 }
 
 // GetLogger: get global logger instance
-func GetLogger() *AppLogger {
+func GetLogger() Logger {
 	if globalLogger == nil {
 		return New()
 	}
