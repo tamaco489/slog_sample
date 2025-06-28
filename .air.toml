@@ -1,0 +1,44 @@
+# Project root directory
+root = "."
+
+# Directory to store temporary files (build logs, etc.)
+tmp_dir = "tmp"
+
+[build]
+# Build command (explicitly specify entry point here)
+cmd = "go build -o ./build/main ./cmd/main.go"
+
+# Path to the binary executable file after build
+bin = "./build/main"
+
+# Directories to exclude (not monitored or built)
+exclude_dir = ["tmp", "vendor", "testdata"]
+
+# File extensions to monitor (only Go files)
+include_ext = ["go"]
+
+# File patterns to exclude (e.g., exclude *_test.go)
+exclude_regex = ["_test.go"]
+
+# Build error log output file
+log = "build-errors.log"
+
+# Delay from change detection to build execution (milliseconds)
+delay = 1000
+
+[log]
+# Display only main process logs (false to output all)
+main_only = false
+
+# Disable log output (false to display logs)
+silent = false
+
+# Display timestamp in logs
+time = true
+
+[screen]
+# Clear console on rebuild
+clear_on_rebuild = true
+
+# Maintain scroll position (true to maintain end of build logs)
+keep_scroll = true
