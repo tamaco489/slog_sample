@@ -76,9 +76,9 @@ func (l *AppLogger) SetLogContext(
 ) {
 	// Create logger with context
 	lw := l.Logger.With(
-		slog.Any("http_request_info", httpRequestInfo),
-		slog.Any("system_info", systemInfo),
-		slog.Any("authorized_info", authorizedInfo),
+		slog.Any(LogFieldKeyHTTPRequest.String(), httpRequestInfo),
+		slog.Any(LogFieldKeySystem.String(), systemInfo),
+		slog.Any(LogFieldKeyAuthorized.String(), authorizedInfo),
 	)
 
 	// Determine log level and log with appropriate method

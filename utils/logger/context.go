@@ -53,3 +53,15 @@ func GetRequestIDContext(ctx context.Context) (string, bool) {
 func SetStatusCodeContext(ctx context.Context, statusCode int) context.Context {
 	return context.WithValue(ctx, statusCodeKey, statusCode)
 }
+
+type LogFieldKey string
+
+const (
+	LogFieldKeyHTTPRequest LogFieldKey = "http_request"
+	LogFieldKeySystem      LogFieldKey = "system"
+	LogFieldKeyAuthorized  LogFieldKey = "authorized"
+)
+
+func (k LogFieldKey) String() string {
+	return string(k)
+}
