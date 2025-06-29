@@ -66,27 +66,32 @@ func (l *AppLogger) FatalContext(ctx context.Context, msg string, args ...any) {
 	os.Exit(1)
 }
 
-// LogRequestCompletion: Log request completion with appropriate level based on status code
-func (l *AppLogger) LogRequestCompletion(ctx context.Context, statusCode int, httpInfo HTTPRequestInfo, systemInfo SystemInfo, authInfo AuthorizedInfo) {
-	// Create structured log attributes using structures directly
-	attrs := []any{
-		"http_info", httpInfo,
-		"system_info", systemInfo,
-		"auth_info", authInfo,
-	}
+// SetLogContext: Set log context with appropriate level based on status code
+func (l *AppLogger) SetLogContext(
+	ctx context.Context,
+	statusCode int,
+	httpInfo HTTPRequestInfo,
+	systemInfo SystemInfo,
+	authInfo AuthorizedInfo,
+) {
+	// Create logger with context
+	lw := l.Logger.
+		WithGroup("http").With(slog.Any("request", httpInfo)).
+		WithGroup("system").With(slog.Any("info", systemInfo)).
+		WithGroup("authorized").With(slog.Any("user", authInfo))
 
 	// Determine log level and log with appropriate method
 	switch {
 	// status: 5xx, level: error
 	case statusCode >= http.StatusInternalServerError:
-		l.ErrorContext(ctx, "request failed", attrs...)
+		lw.ErrorContext(ctx, "request failed")
 
 	// status: 4xx, level: warn
 	case statusCode >= http.StatusBadRequest:
-		l.WarnContext(ctx, "request failed", attrs...)
+		lw.WarnContext(ctx, "request failed")
 
 	// status: 2xx, level: info
 	default:
-		l.InfoContext(ctx, "request completed", attrs...)
+		lw.InfoContext(ctx, "request completed")
 	}
 }

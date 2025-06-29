@@ -14,7 +14,7 @@ type Logger interface {
 	FatalContext(ctx context.Context, msg string, args ...any)
 
 	// Request logging method
-	LogRequestCompletion(ctx context.Context, statusCode int, httpInfo HTTPRequestInfo, systemInfo SystemInfo, authInfo AuthorizedInfo)
+	SetLogContext(ctx context.Context, statusCode int, httpInfo HTTPRequestInfo, systemInfo SystemInfo, authInfo AuthorizedInfo)
 }
 
 var _ Logger = (*AppLogger)(nil)

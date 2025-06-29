@@ -41,7 +41,7 @@ func RequestMiddleware(next http.HandlerFunc) http.HandlerFunc {
 
 			// Log request completion
 			env := configuration.GetEnvironment()
-			logger.GetLogger(env).LogRequestCompletion(
+			logger.GetLogger(env).SetLogContext(
 				*wrappedWriter.GetContext(),
 				wrappedWriter.GetStatusCode(),
 				httpInfo,
