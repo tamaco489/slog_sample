@@ -60,12 +60,6 @@ func (l *AppLogger) ErrorContext(ctx context.Context, msg string, args ...any) {
 	l.Logger.ErrorContext(ctx, msg, args...)
 }
 
-// FatalContext: output fatal log
-func (l *AppLogger) FatalContext(ctx context.Context, msg string, args ...any) {
-	l.Logger.ErrorContext(ctx, msg, args...)
-	os.Exit(1)
-}
-
 // SetLogContext: Set log context with appropriate level based on status code
 func (l *AppLogger) SetLogContext(
 	ctx context.Context,

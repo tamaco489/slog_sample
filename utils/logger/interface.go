@@ -11,7 +11,6 @@ type Logger interface {
 	InfoContext(ctx context.Context, msg string, args ...any)
 	WarnContext(ctx context.Context, msg string, args ...any)
 	ErrorContext(ctx context.Context, msg string, args ...any)
-	FatalContext(ctx context.Context, msg string, args ...any)
 
 	// Request logging method
 	SetLogContext(ctx context.Context, statusCode int, httpInfo HTTPRequestInfo, systemInfo SystemInfo, authInfo AuthorizedInfo)
