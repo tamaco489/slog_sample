@@ -15,9 +15,6 @@ type Authorizer interface {
 func WithAuth(authorizer Authorizer, next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		// Check if it's a ResponseWriterWrapper
-		wrappedWriter, isWrapped := w.(*logger.ResponseWriterWrapper)
-
 		// NOTE: Return authorization failure for testing
 		// authInfo, err := authorizer.Authorize(r.Context(), r)
 		// logger.GetLogger().DebugContext(r.Context(), "Authorization failed", "error", fmt.Errorf("Authorization failed"))
@@ -27,6 +24,15 @@ func WithAuth(authorizer Authorizer, next http.HandlerFunc) http.HandlerFunc {
 		// Execute authorization process
 		authInfo, err := authorizer.Authorize(r.Context(), r)
 		if err != nil {
+			// Set authentication failed status in context for logging
+			failedAuthInfo := logger.AuthorizedInfo{
+				TenantID: "unknown",
+				MemberID: "unknown",
+				Role:     "failed",
+			}
+			ctx := logger.SetAuthorizedInfoContext(r.Context(), failedAuthInfo)
+			r = r.WithContext(ctx)
+
 			http.Error(w, err.Error(), http.StatusUnauthorized)
 			return
 		}
@@ -37,8 +43,8 @@ func WithAuth(authorizer Authorizer, next http.HandlerFunc) http.HandlerFunc {
 		// Update request context
 		r = r.WithContext(ctx)
 
-		// If it's a ResponseWriterWrapper, update the context
-		if isWrapped {
+		// Update ResponseWriterWrapper context if it's a wrapped writer
+		if wrappedWriter, ok := w.(*logger.ResponseWriterWrapper); ok {
 			wrappedWriter.UpdateContext(ctx)
 		}
 

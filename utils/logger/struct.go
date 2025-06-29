@@ -52,6 +52,15 @@ func NewInitialAuthorizedInfo() AuthorizedInfo {
 	}
 }
 
+// NewAuthorizedInfo: Create authorized user info
+func NewAuthorizedInfo(tenantID, memberID, role string) AuthorizedInfo {
+	return AuthorizedInfo{
+		TenantID: tenantID,
+		MemberID: memberID,
+		Role:     role,
+	}
+}
+
 // HTTPRequestInfo: HTTP request information
 type HTTPRequestInfo struct {
 	Method     string `json:"method"`

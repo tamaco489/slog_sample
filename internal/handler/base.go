@@ -26,15 +26,8 @@ func (h *BaseHandler) WriteJSONResponse(w http.ResponseWriter, r *http.Request, 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(statusCode)
 
-	// set status code to context
-	ctx := logger.SetStatusCodeContext(r.Context(), statusCode)
-	_ = r.WithContext(ctx) // Update context but not used in this function
-
 	jsonData, err := json.Marshal(data)
 	if err != nil {
-		// set status code to context for error case
-		ctx = logger.SetStatusCodeContext(r.Context(), http.StatusInternalServerError)
-		_ = r.WithContext(ctx) // Update context for error case
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

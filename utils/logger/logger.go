@@ -5,39 +5,22 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
-	"sync"
-)
-
-var (
-	globalLogger Logger
-	once         sync.Once
 )
 
 // New: create new logger instance
 func New(env string) Logger {
-	once.Do(func() {
-		logLevel := slog.LevelDebug
-		if env != "dev" {
-			logLevel = slog.LevelInfo
-		}
-
-		handler := slog.NewJSONHandler(
-			os.Stdout, &slog.HandlerOptions{
-				Level: logLevel,
-			},
-		)
-
-		globalLogger = NewAppLogger(slog.New(handler))
-	})
-	return globalLogger
-}
-
-// GetLogger: get global logger instance
-func GetLogger(env string) Logger {
-	if globalLogger == nil {
-		return New(env)
+	logLevel := slog.LevelDebug
+	if env != "dev" {
+		logLevel = slog.LevelInfo
 	}
-	return globalLogger
+
+	handler := slog.NewJSONHandler(
+		os.Stdout, &slog.HandlerOptions{
+			Level: logLevel,
+		},
+	)
+
+	return NewAppLogger(slog.New(handler))
 }
 
 // DebugContext: output debug log
@@ -81,9 +64,9 @@ func (l *AppLogger) SetLogContext(
 	case statusCode >= http.StatusInternalServerError:
 		lw.ErrorContext(ctx, "request failed")
 
-	// status: 4xx, level: warn
+	// status: 4xx, level: info (client errors are not warnings)
 	case statusCode >= http.StatusBadRequest:
-		lw.WarnContext(ctx, "request failed")
+		lw.InfoContext(ctx, "request completed")
 
 	// status: 2xx, level: info
 	default:

@@ -1,6 +1,8 @@
 package handler
 
-import "net/http"
+import (
+	"net/http"
+)
 
 // UserProfileMeResponse represents the user profile me response structure
 type UserProfileMeResponse struct {
@@ -13,11 +15,12 @@ type UserProfileMeResponse struct {
 
 // HandleUserProfileMe handles user profile me API
 func HandleUserProfileMe(w http.ResponseWriter, r *http.Request) {
-	// NOTE: Intentionally returning 4xx
+	// NOTE: Intentionally returning 4xx for testing
+	// This will be logged with the authorization status from context
 	http.Error(w, "Incorrect request", http.StatusBadRequest)
 
+	// Uncomment below for successful response
 	// base := NewBaseHandler()
-
 	// response := UserProfileMeResponse{
 	// 	UID:       "864c857e-bc03-7b09-5b8f-750d312636c3",
 	// 	FirstName: "John",

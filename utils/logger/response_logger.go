@@ -9,7 +9,7 @@ import (
 type ResponseWriterWrapper struct {
 	http.ResponseWriter
 	statusCode int
-	ctx        *context.Context
+	ctx        context.Context
 }
 
 // NewResponseWriterWrapper: create new ResponseWriterWrapper
@@ -37,15 +37,11 @@ func (rw *ResponseWriterWrapper) Write(data []byte) (int, error) {
 
 // UpdateContext: update context in ResponseWriterWrapper
 func (rw *ResponseWriterWrapper) UpdateContext(ctx context.Context) {
-	if rw.ctx == nil {
-		rw.ctx = &ctx
-	} else {
-		*rw.ctx = ctx
-	}
+	rw.ctx = ctx
 }
 
 // GetContext: get context from ResponseWriterWrapper
-func (rw *ResponseWriterWrapper) GetContext() *context.Context {
+func (rw *ResponseWriterWrapper) GetContext() context.Context {
 	return rw.ctx
 }
 

@@ -19,8 +19,8 @@ func (a *Auth) Authorize(ctx context.Context, r *http.Request) (*logger.Authoriz
 	// In a real application, this would be implemented with JWT token validation and database authorization checks
 
 	return &logger.AuthorizedInfo{
-		Role:     "user",
-		TenantID: "tenant123",
-		MemberID: "member456", // unique member_id
+		Role:     "general",
+		TenantID: "tenant_123",
+		MemberID: "member_456",
 	}, nil
 }
