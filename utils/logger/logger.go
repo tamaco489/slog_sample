@@ -70,15 +70,16 @@ func (l *AppLogger) FatalContext(ctx context.Context, msg string, args ...any) {
 func (l *AppLogger) SetLogContext(
 	ctx context.Context,
 	statusCode int,
-	httpInfo HTTPRequestInfo,
+	httpRequestInfo HTTPRequestInfo,
 	systemInfo SystemInfo,
-	authInfo AuthorizedInfo,
+	authorizedInfo AuthorizedInfo,
 ) {
 	// Create logger with context
-	lw := l.Logger.
-		WithGroup("http").With(slog.Any("request", httpInfo)).
-		WithGroup("system").With(slog.Any("info", systemInfo)).
-		WithGroup("authorized").With(slog.Any("user", authInfo))
+	lw := l.Logger.With(
+		slog.Any("http_request_info", httpRequestInfo),
+		slog.Any("system_info", systemInfo),
+		slog.Any("authorized_info", authorizedInfo),
+	)
 
 	// Determine log level and log with appropriate method
 	switch {

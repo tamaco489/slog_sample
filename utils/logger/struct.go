@@ -38,17 +38,17 @@ func NewSystemInfo(env string) SystemInfo {
 
 // AuthorizedInfo: Authorized information
 type AuthorizedInfo struct {
-	Role     string `json:"role"`
 	TenantID string `json:"tenant_id"`
 	MemberID string `json:"member_id"`
+	Role     string `json:"role"`
 }
 
 // NewInitialAuthorizedInfo: Create new AuthorizedInfo instance
 func NewInitialAuthorizedInfo() AuthorizedInfo {
 	return AuthorizedInfo{
-		Role:     "anonymous",
 		TenantID: "default",
 		MemberID: "unknown",
+		Role:     "anonymous",
 	}
 }
 
