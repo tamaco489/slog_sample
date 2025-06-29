@@ -14,11 +14,16 @@ var (
 )
 
 // New: create new logger instance
-func New() Logger {
+func New(env string) Logger {
 	once.Do(func() {
+		logLevel := slog.LevelDebug
+		if env != "dev" {
+			logLevel = slog.LevelInfo
+		}
+
 		handler := slog.NewJSONHandler(
 			os.Stdout, &slog.HandlerOptions{
-				Level: slog.LevelDebug,
+				Level: logLevel,
 			},
 		)
 
@@ -28,9 +33,9 @@ func New() Logger {
 }
 
 // GetLogger: get global logger instance
-func GetLogger() Logger {
+func GetLogger(env string) Logger {
 	if globalLogger == nil {
-		return New()
+		return New(env)
 	}
 	return globalLogger
 }
