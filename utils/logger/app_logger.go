@@ -4,24 +4,7 @@ import (
 	"context"
 	"log/slog"
 	"net/http"
-	"os"
 )
-
-// New: create new logger instance
-func New(env string) Logger {
-	logLevel := slog.LevelDebug
-	if env != "dev" {
-		logLevel = slog.LevelInfo
-	}
-
-	handler := slog.NewJSONHandler(
-		os.Stdout, &slog.HandlerOptions{
-			Level: logLevel,
-		},
-	)
-
-	return NewAppLogger(slog.New(handler))
-}
 
 // DebugContext: output debug log
 func (l *AppLogger) DebugContext(ctx context.Context, msg string, args ...any) {
