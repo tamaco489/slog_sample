@@ -30,7 +30,7 @@ func (rw *ResponseWriterWrapper) WriteHeader(statusCode int) {
 // Write: write data to ResponseWriterWrapper
 func (rw *ResponseWriterWrapper) Write(data []byte) (int, error) {
 	if rw.statusCode == 0 {
-		rw.statusCode = 200
+		rw.statusCode = http.StatusOK // default status code is 200
 	}
 	return rw.ResponseWriter.Write(data)
 }
